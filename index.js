@@ -4,6 +4,7 @@ const mongoose=require("mongoose")
 const authRoute=require("./routes/auth")
 const app=express()
 const userRoute=require("./routes/users")
+const postRoutes= require("./routes/posts")
 dotenv.config()
 
 app.use(express.json())
@@ -11,8 +12,11 @@ app.use(express.json())
 
 mongoose.connect(process.env.mongodb).then(console.log("connected to DB")).catch((err)=>console.log(err));
 
+
+app.use("/post",postRoutes)
 app.use("/users",userRoute)
 app.use("/auth",authRoute)
+
 
 // app.use("/",(req,res) =>{
 //     console.log("url ")

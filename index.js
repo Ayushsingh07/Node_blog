@@ -7,13 +7,12 @@ const userRoute=require("./routes/users")
 const postRoutes= require("./routes/posts")
 const catRoutes=require("./routes/categories")
 const multer =require("multer")
-
-
-
+const cors =require("cors")
 dotenv.config()
-
 app.use(express.json())
 
+
+app.use(cors())
 
 mongoose.connect(process.env.mongodb).then(console.log("connected to DB")).catch((err)=>console.log(err));
 const storage= multer.diskStorage({
@@ -59,6 +58,6 @@ app.use((req, res, next) => {
   });
 
 app.listen(PORT,()=>{
-    console.log("running good gg ON",PORT)
+    console.log("running good gg ON",+PORT)
 })  
 

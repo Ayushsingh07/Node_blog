@@ -20,41 +20,82 @@ router.post("/",async(req,res)=>{
 
 //update post
 
-router.delete("/:id",async(req,res)=>{
-    if(req.body.userId ==req.params.id){
+router.put("/:id",async(req,res)=>{
+    try{
+        const post =await Post.findById(req.params.id)
+        if(post.username === req.body.username){
         try{
-             const user = await User.findById(req.params.id)
-        
-        
-        try{
-            await Post.deleteMany({username:user.username})
-        
-            await User.findByIdAndDelete(req.params.id)
-            res.status(200).json("user deleted")
-       
-        }
-    catch(err){
-        res.status(500).json(err)
-    }}
-    catch(err){
-        res.status(500).json("user not found")
-    
-}
-}   else {
-        res.status(500).json("not allowed!!!")
+            const updatePost =await Post.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $set:req.body,
+                },
+                {new:true}
+            )
+            res.status(200).json(updatePost)
+        }catch(err){res.status(500).json(err)}
     }
-
+    else{
+        res.status(401).json("you can update only your post!!!")
+    }
+    }catch(err){res.status(500).json(err)
+    }
+    
 })
-//delete post
+//delete post`
+router.delete("/:id",async(req,res)=>{
+    try{
+        const post =await Post.findById(req.params.id)
+        if(post.username === req.body.username){
+        try{
+            await post.delete()
+            res.status(200).json("post deleted")
+        }catch(err){res.status(500).json(err)}
+    }
+    else{
+        res.status(401).json("you can delete only your post!!!")
+    }
+    }catch(err){res.status(500).json(err)
+    }
+    
+})
 
 //GET post
 
 router.get("/:id", async (req,res)=>{
     try{
-        const user=await User.findById(req.params.id)
-        const {password, ...others}=user._doc
+        const post=await Post.findById(req.params.id)
+        
 
-        res.status(200).json(others)
+        res.status(200).json(post)
+
+    }catch(err){
+        res.status(500).json(err)
+    }
+    
+})
+//all post
+router.get("/", async (req,res)=>{
+    const username =req.query.user
+    const catname=req.query.cat
+
+    try{
+
+
+        let posts
+
+        if(username){
+            posts =await Post.find({username})
+        }else if(catname){
+            posts= await Post.find({categories:{
+                $in:[catname]
+            }})
+        }else {
+            posts= await Post.find()
+        }
+
+        res.status(200).json(posts)
+
 
     }catch(err){
         res.status(500).json(err)

@@ -23,6 +23,7 @@ const storage= multer.diskStorage({
     cb(null,"hello")
   },
 })
+const PORT =process.env.PORT || 5000
 
 const upload =multer({storage:storage})
 app.post("/upload",upload.single("file"),(req,res)=>{
@@ -57,7 +58,7 @@ app.use((req, res, next) => {
     });
   });
 
-app.listen('5000',()=>{
-    console.log("running good gg")
+app.listen(PORT,()=>{
+    console.log("running good gg ON",PORT)
 })  
 

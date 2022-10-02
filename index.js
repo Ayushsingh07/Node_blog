@@ -7,13 +7,12 @@ const userRoute=require("./routes/users")
 const postRoutes= require("./routes/posts")
 const catRoutes=require("./routes/categories")
 const multer =require("multer")
-
-
-
+const cors =require("cors")
 dotenv.config()
-
 app.use(express.json())
 
+
+app.use(cors())
 
 mongoose.connect(process.env.mongodb).then(console.log("connected to DB")).catch((err)=>console.log(err));
 const storage= multer.diskStorage({
@@ -23,6 +22,7 @@ const storage= multer.diskStorage({
     cb(null,"hello")
   },
 })
+const PORT =process.env.PORT || 5000
 
 const upload =multer({storage:storage})
 app.post("/upload",upload.single("file"),(req,res)=>{
@@ -57,7 +57,7 @@ app.use((req, res, next) => {
     });
   });
 
-app.listen('5000',()=>{
-    console.log("running good gg")
+app.listen(PORT,()=>{
+    console.log("running good gg ON")
 })  
 

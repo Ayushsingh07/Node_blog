@@ -58,6 +58,6 @@ app.use((req, res, next) => {
   });
 
 app.listen(PORT,()=>{
-    console.log("running good gg ON",+PORT)
+    console.log("running good gg ON")
 })  
 

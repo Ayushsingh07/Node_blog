@@ -14,7 +14,7 @@ app.use(express.json())
 
 app.use(cors())
 
-mongoose.connect(process.env.mongodb).then(console.log("connected to DB")).catch((err)=>console.log(err));
+mongoose.connect("mongodb+srv://nqu7069:passtest@cluster0.rmatrjd.mongodb.net/blog?retryWrites=true&w=majority").then(console.log("connected to DB")).catch((err)=>console.log(err));
 const storage= multer.diskStorage({
   destination:(req,file,cb) =>{
     cb(null,"images")
